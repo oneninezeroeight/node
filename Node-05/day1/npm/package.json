@@ -1,0 +1,17 @@
+{
+  "name": "npm-test",
+  "version": "6.6.6",
+  "description": "这是一个模块测试文件",
+  "main": "index.js",
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "wifi": "0.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "ls",
+    "start": "git add ."
+  },
+  "author": "",
+  "license": "ISC"
+}
