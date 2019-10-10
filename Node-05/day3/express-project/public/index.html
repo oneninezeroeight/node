@@ -1,28 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-
 <body>
-    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <div>hello world</div>
     <script>
+        // 发送请求，就不会跨域
         $.ajax({
-            type: "POST",
-            // 请求体
-            data:{
-                name: '中文'
-            },
-            url: "http://localhost:3000/home",
-            success(data) {
-                console.log(data)
-            }
         })
     </script>
 </body>
-
 </html>
