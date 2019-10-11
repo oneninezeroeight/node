@@ -372,3 +372,12 @@ npm install mysql --save
 
 - 前端工程化 脚手架一键生成项目
 - 前端模块化 require module.export
+
+# window
+
+刷window系统
+
+window系统跑一遍
+
+- mongodb.msi安装好
+- compass安装好
