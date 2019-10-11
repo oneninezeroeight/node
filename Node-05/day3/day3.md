@@ -47,6 +47,8 @@ app.post('/home', function (req, res) {
 app.listen(3000)
 ```
 
+## 脚手架
+
 快速搭建一个express项目的时候可以使用express的脚手架
 ```bash
 npm install -g express-generator@4
@@ -59,9 +61,9 @@ npm run start
 ```
 
 - bin www 是一份启动文件 node ./bin/www 会在这里使用http模块创建服务器，它会接受express实例化的app
-- public 公开的文件夹 放前端的文件 相当于wamp的www文件夹
-- routes 路由 把路由模块化
-- views 视图文件夹 它是把jade预编译为html结构
+- public 公开的文件夹 放前端的文件 相当于wamp的www文件夹 放开发好的前端文件 文件路由
+- routes 路由 把路由模块化 逻辑路由 调用数据库，对后端系统操作
+- views 视图文件夹 它是把jade预编译为html结构 后端渲染手法，基本不用
 - app.js express初始化的app对象，封装了很多方法
 
 浏览器只能识别html,css和js
@@ -152,3 +154,97 @@ axios.get('/user?ID=12345')
 
 # 登录注册
 
+产品经理早上，各位同志开会了，show出它的原型图，指导各位产品的预想形态，产品原型图，产品文档(来自于客服部的投诉，老板的建议)
+
+- [原型图](http://www.axureux.com/demo/Templates012/#g=1&p=%E4%BD%9C%E5%93%81%E9%A6%96%E9%A1%B5)
+
+设计妹子根据原型图，要去绘制图片，素材，输出带有素材带有标记(间距标记，颜色值标记)，一份PSD，PNG和JPG的图，妹子会吧所有的素材放到Git(github，gitee，gitlab，公司内部自建git服务器)，参考网上的UI框架(bootstrap)，为了成本会减掉UI成本
+
+前端切图，运用html和css把设计师的图纸转化为html文件，canvas渲染引擎，前端完成html文件之后，根据后端的接口文档，去调用数据，完成下一步渲染，发送ajax请求等去跟后端通信(跨域问题)
+```js
+const sign = ({
+    username,
+    password
+}) => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'http://localhost:3000/sign',
+            type: 'POST',
+            data: {
+                username,
+                password
+            },
+            success(data) {
+                console.log(data)
+                resolve(data)
+            },
+            error(err) {
+                reject(err)
+            }
+        })
+    })
+}
+$('#sign').click(async () => {
+    let username = $('#inputUsername').val();
+    let password = $('#inputPassword').val();
+    let data = await sign({
+        username,
+        password
+    })
+    switch (data.status) {
+        case 0:
+            break;
+        case 1:
+            location.href = 'https://www.baidu.com'
+    }
+    // console.log(data)
+})
+```
+
+后端
+
+后端先用脚手架初始化一个后端项目
+```bash
+express ./be
+```
+因为前后端是分离的，就是两个团队是分开开发的，所以此时为了让前端顺利地调用接口，那么后端用了CORS来解决跨域问题
+```js
+// 中间件处理响应头部分，加上CORS
+app.use((req,res,next)=>{
+  res.append('Access-Control-Allow-Origin','*')
+  next()
+})
+```
+后端根据登录注册的需求，设计了一个新的路由，并对应与数据库产生关联，开发完成之后，内部先测试，然后把路由写在一份接口文档
+```js
+var express = require('express');
+var router = express.Router();
+/* GET home page. */
+router.post('/', function (req, res, next) {
+    let {
+        username,
+        password
+    } = req.body
+    if (username === 'abc' && password === '456') {
+        res.json({
+            status: 1,
+            msg: '登录成功'
+        });
+    } else {
+        res.json({
+            status: 0,
+            msg: '登录失败'
+        });
+    }
+    // console.log(req.body)
+});
+module.exports = router;
+```
+测试人员，妹子，找出你的bug，你必须老实更改你的程序错误
+
+上线了，加班，用户使用量少，先上后端，再上前端，把前后端放在同一个服务器上更新
+
+
+
+- be backend 后端 主要职责就是写接口(路由)
+- fe fontend 前端 主要切图，还有获取数据渲染
