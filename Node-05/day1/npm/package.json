@@ -4,7 +4,7 @@
   "description": "这是一个模块测试文件",
   "main": "index.js",
   "dependencies": {
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "wifi": "0.0.2"
   },
   "devDependencies": {},
